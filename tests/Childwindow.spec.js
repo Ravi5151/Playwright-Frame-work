@@ -1,6 +1,6 @@
 const { test, expect, browser } = require("@playwright/test");
 
-test.only("Child window handling", async ({ browser }) => {
+test("Child window handling", async ({ browser }) => {
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
