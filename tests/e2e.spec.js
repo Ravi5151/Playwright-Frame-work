@@ -28,5 +28,10 @@ test("End to End Automation of a page", async ({ page }) => {
       break;
     }
   }
-  await page.pause();
+  //await page.pause();
+  await page.locator("[routerlink*='cart']").click();
+  await page.locator("div li").first().waitFor();
+  const bool = await page.locator('h3:has-text("ZARA COAT 3")').isVisible();
+  console.log(bool);
+  await expect(bool).toBeTruthy();
 });
