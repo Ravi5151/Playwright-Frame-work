@@ -34,4 +34,35 @@ test("End to End Automation of a page", async ({ page }) => {
   const bool = await page.locator('h3:has-text("ZARA COAT 3")').isVisible();
   console.log(bool);
   await expect(bool).toBeTruthy();
+
+  //Handling dynamic dropdowns
+  await page.locator("text = Checkout").click();
+  const dateMonth = await page.locator(".ddl").first();
+  const dateYaear = await page.locator(".ddl").last();
+  await dateMonth.selectOption("12");
+  await dateYaear.selectOption("27");
+  await page.pause();
+  await page
+    .locator("[placeholder*='Select Country']")
+    .pressSequentially("ind");
+  const dropdown = await page.locator(".ta-results");
+  await dropdown.waitFor();
+  const options = await dropdown.locator("button");
+  await dropdown.locator("button").first().waitFor();
+  const optionsCount = await options.count();
+  console.log(optionsCount);
+  for (let i = 0; i < optionsCount; ++i) {
+    const text = await options.nth(i);
+    const country = await text.textContent();
+    if (country.trim() === "India") {
+      await text.click();
+      console.log("India clicked");
+      break;
+    }
+  }
+  console.log(
+    await page.locator("[placeholder*='Select Country']").inputValue(),
+  );
+
+  await page.pause();
 });
